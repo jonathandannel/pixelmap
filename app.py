@@ -1,16 +1,19 @@
 from flask import Flask, request, jsonify
+from ocr import ScanRemoteImage
+
 app = Flask(__name__)
 app.debug=True
 
 @app.route('/scan', methods=['POST'])
 def scan():
     image_url = request.json["image"]
-    request_options = request.json["options"]
+    image = ScanRemoteImage(image_url)
 
     return_object = {
-      "message": f"Received request for {image_url}",
-      "imageText": "lorem ipsum"
+      "message": "Success",
+      "imageText": image.get_text()
     }
+    
     return jsonify(return_object)
 
 
