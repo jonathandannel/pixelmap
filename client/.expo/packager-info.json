@@ -1,9 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 21673,
-  "expoServerNgrokUrl": "https://bb-dfr.anonymous.client.exp.direct",
-  "packagerNgrokUrl": "https://packager.bb-dfr.anonymous.client.exp.direct",
-  "ngrokPid": 21795
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
+  "webpackServerPort": null
 }
