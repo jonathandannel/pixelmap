@@ -30,10 +30,6 @@ export default function App() {
     }
   }, [galleryPermissions]);
 
-  const getPhotoFromCameraView = () => {
-    // TODO
-  };
-
   return !takingPhoto ? (
     <View>
       <Button onPress={pickPhotoFromGallery} title="gallery">
@@ -44,10 +40,15 @@ export default function App() {
         {" "}
         Take a photo{" "}
       </Button>
+      {chosenPhoto ? <Text>Photo chosen</Text> : null}
     </View>
   ) : (
     <CameraView
       setTakingPhoto={setTakingPhoto}
+      setChosenPhoto={setChosenPhoto}
+      chosenPhoto={chosenPhoto}
+      cameraPermissions={cameraPermissions}
+      getCameraPermissions={getCameraPermissions}
       setCameraPermissions={setCameraPermissions}
     />
   );
