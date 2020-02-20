@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { StyleSheet, Text, View, Button } from "react-native";
 import * as Permissions from "expo-permissions";
@@ -24,8 +24,23 @@ function HomeView({
   state,
   navigation,
   changeActivePhoto,
-  changeGalleryPermission
+  changeGalleryPermission,
+  changeCameraPermission
 }) {
+  async function checkMultiPermissions() {
+    const {
+      permissions: { camera, cameraRoll }
+    } = await Permissions.getAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
+
+    changeCameraPermission(camera.granted);
+    changeGalleryPermission(cameraRoll.granted);
+  }
+
+  useEffect(() => {
+    // Check permissions on load
+    checkMultiPermissions();
+  }, []);
+
   const pickPhotoFromGallery = async () => {
     if (!state.galleryPermission) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -36,7 +51,9 @@ function HomeView({
         return;
       }
     }
-    const photo = await ImagePicker.launchImageLibraryAsync();
+    const photo = await ImagePicker.launchImageLibraryAsync({
+      quality: 1
+    });
     changeActivePhoto(photo);
     navigation.navigate("Photo");
   };

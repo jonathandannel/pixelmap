@@ -1,13 +1,23 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
+import { connect } from "react-redux";
+import { StyleSheet, Text, View, Image } from "react-native";
 
-import { StyleSheet, Text, View } from "react-native";
+const mapStateToProps = state => ({ state });
 
-export default function PhotoView({ navigation }) {
+function PhotoView({ navigation, state }) {
   return (
     <View style={{ flex: 1 }}>
-      <Text>SASDFAFAFAJAN111111!!!N</Text>
+      <Image style={styles.image} source={state.activePhoto}></Image>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  image: {
+    resizeMode: "contain",
+    height: 300,
+    width: "auto"
+  }
+});
+
+export default connect(mapStateToProps)(PhotoView);

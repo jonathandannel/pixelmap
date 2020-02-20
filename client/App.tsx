@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "./reducer";
 

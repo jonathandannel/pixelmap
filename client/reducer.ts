@@ -8,6 +8,7 @@ export const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_CAMERA_PERMISSION": {
       const { permission } = action;
+      console.log("CAMERA");
       return {
         ...state,
         cameraPermission: permission
@@ -15,6 +16,7 @@ export const rootReducer = (state = initialState, action) => {
     }
     case "SET_GALLERY_PERMISSION": {
       const { permission } = action;
+      console.log("GALLERY");
       return {
         ...state,
         galleryPermission: permission

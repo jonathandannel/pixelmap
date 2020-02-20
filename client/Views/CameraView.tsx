@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useCallback,
+  useRef
+} from "react";
 import { Camera } from "expo-camera";
 import { connect } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -45,7 +51,7 @@ function CameraView({
 
   const takePhoto = async camera => {
     if (cameraRef && cameraRef.current !== undefined) {
-      camera.takePictureAsync().then(p => {
+      camera.takePictureAsync({ allowsEditing: true }).then(p => {
         changeActivePhoto(p);
         navigation.navigate("Photo");
       });
@@ -54,11 +60,9 @@ function CameraView({
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (cameraRef.current) {
-      setTimeout(() => {
-        getBestRatio(cameraRef.current).then(r => setCameraRatio(r));
-      }, 300);
+      getBestRatio(cameraRef.current).then(r => setCameraRatio(r));
     }
   }, [cameraRef.current]);
 
