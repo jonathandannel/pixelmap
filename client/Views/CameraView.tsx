@@ -47,10 +47,12 @@ function CameraView({
 
   const takePhoto = () => {
     if (cameraReady) {
-      cameraRef.current.takePictureAsync({ base64: true }).then(p => {
-        changeActivePhoto(p);
-        navigation.navigate("Photo");
-      });
+      cameraRef.current
+        .takePictureAsync({ quality: 1, base64: true })
+        .then(p => {
+          changeActivePhoto(p);
+          navigation.navigate("Photo");
+        });
     } else {
       return;
     }
