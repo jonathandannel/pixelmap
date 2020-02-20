@@ -47,7 +47,8 @@ function CameraView({
 
   const takePhoto = () => {
     if (cameraReady) {
-      cameraRef.current.takePictureAsync({ allowsEditing: true }).then(p => {
+      cameraRef.current.takePictureAsync({ base64: false }).then(p => {
+        console.log(p);
         changeActivePhoto(p);
         navigation.navigate("Photo");
       });
