@@ -1,48 +1,66 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Camera } from "expo-camera";
-import { MaterialCommunityIcons } from "expo-vector-icons";
+import { connect } from "react-redux";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as Permissions from "expo-permissions";
 import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
+import { setActivePhoto, setCameraPermission } from "../actions";
 
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window");
 
-export default function CameraView({
-  setTakingPhoto,
-  cameraPermissions,
-  setCameraPermissions,
-  getCameraPermissions,
-  setChosenPhoto,
-  chosenPhoto
+const mapStateToProps = state => ({ state });
+
+const mapDispatchToProps = dispatch => ({
+  changeActivePhoto: photo => dispatch(setActivePhoto(photo)),
+  changeCameraPermission: permission =>
+    dispatch(setCameraPermission(permission))
+});
+
+function CameraView({
+  state,
+  navigation,
+  changeActivePhoto,
+  changeCameraPermission
 }) {
   const cameraRef = useRef();
   const [cameraRatio, setCameraRatio] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (!state.cameraPermission) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        if (status === "granted") {
+          changeCameraPermission(true);
+        } else {
+          navigation.navigate("Home");
+        }
+      }
+    })();
+  }, []);
 
   const getBestRatio = async current => {
     const ratios = await current.getSupportedRatiosAsync();
     return ratios[ratios.length - 1];
   };
 
-  const takePhoto = async () => {
-    const photo = await this.cameraRef.current.takePictureAsync();
-    setChosenPhoto(photo);
+  const takePhoto = async camera => {
+    if (cameraRef && cameraRef.current !== undefined) {
+      camera.takePictureAsync().then(p => {
+        changeActivePhoto(p);
+        navigation.navigate("Photo");
+      });
+    } else {
+      return console.error("Photo not taken -- no camera ref");
+    }
   };
 
   useEffect(() => {
-    if (!cameraPermissions) {
-      getCameraPermissions(setCameraPermissions);
-    }
-  });
-
-  useEffect(() => {
-    if (chosenPhoto) {
-      setTakingPhoto(false);
-    }
-  }, [chosenPhoto]);
-
-  useEffect(() => {
     if (cameraRef.current) {
-      getBestRatio(cameraRef.current).then(r => setCameraRatio(r));
+      setTimeout(() => {
+        getBestRatio(cameraRef.current).then(r => setCameraRatio(r));
+      }, 300);
     }
-  }, [cameraRef]);
+  }, [cameraRef.current]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -58,7 +76,7 @@ export default function CameraView({
           style={{
             backgroundColor: "transparent"
           }}
-          onPress={takePhoto}
+          onPress={() => takePhoto(cameraRef.current)}
         >
           <MaterialCommunityIcons
             name="camera"
@@ -88,3 +106,5 @@ const styles = StyleSheet.create({
     margin: 30
   }
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(CameraView);

@@ -1,3 +1,13 @@
 {
-  "python.pythonPath": "virtualenv/bin/python3"
+  "python.pythonPath": "virtualenv/bin/python3",
+  "files.exclude": {
+    "client/.expo": true,
+    "client/assets": true,
+    "client/node_modules": true,
+    "client/web-build": true,
+    "virtualenv": true,
+    "__pycache__": true,
+    ".expo": true,
+    ".vscode": true
+  }
 }
