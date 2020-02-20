@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
-from ocr import ScanRemoteImage
+from ocr import ScanBase64Image, ScanRemoteImage
+
+# testing
+import somefile as mockdata
 
 app = Flask(__name__)
 app.debug=True
@@ -9,7 +12,7 @@ def scan():
     data = request.get_json()
     base64_string = data["base64"]
 
-    print(base64_string)
+    image = 
 
     # image = ScanRemoteImage(image_url)
     # image_text = image.get_text()

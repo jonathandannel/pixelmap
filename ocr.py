@@ -10,6 +10,7 @@ class ScanBase64Image:
     
     def decode(self):
         decoded = base64.decode(self.base64string)
+        print(type(decoded))
 
 
 class ScanRemoteImage:
