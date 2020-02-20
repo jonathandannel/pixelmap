@@ -52,6 +52,7 @@ function HomeView({
       }
     }
     const photo = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
       quality: 1
     });
     changeActivePhoto(photo);

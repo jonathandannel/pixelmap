@@ -8,14 +8,16 @@ function PhotoView({ navigation, state: { activePhoto } }) {
   const makeApiCall = async () => {
     const payload = JSON.stringify({
       type: "image",
-      base64: `data:image/jpg;base64,${activePhoto.base64}`
+      base64: activePhoto.base64
     });
     console.log(payload);
     fetch("http://d7cbb09a.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: payload
-    });
+    })
+      .then(r => r.json())
+      .then(j => console.log(j));
   };
 
   return (
