@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, View, Button } from "react-native";
 import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
 
@@ -72,10 +72,6 @@ function HomeView({
       >
         {" "}
         Take a photo{" "}
-      </Button>
-      <Button title="logger" onPress={() => console.log(state)}>
-        {" "}
-        Log State{" "}
       </Button>
     </View>
   );

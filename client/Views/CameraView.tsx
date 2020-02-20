@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useState,
-  useCallback,
-  useRef
-} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Camera } from "expo-camera";
 import { connect } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -29,7 +23,8 @@ function CameraView({
   changeCameraPermission
 }) {
   const cameraRef = useRef();
-  const [cameraRatio, setCameraRatio] = useState(null);
+  const [cameraReady, setCameraReady] = useState(false);
+  const [cameraRatio, setCameraRatio] = useState("4:3");
 
   useEffect(() => {
     (async () => {
@@ -44,27 +39,28 @@ function CameraView({
     })();
   }, []);
 
-  const getBestRatio = async current => {
-    const ratios = await current.getSupportedRatiosAsync();
-    return ratios[ratios.length - 1];
+  const getBestRatio = () => {
+    cameraRef.current
+      .getSupportedRatiosAsync()
+      .then(r => setCameraRatio(r[r.length - 1]));
   };
 
-  const takePhoto = async camera => {
-    if (cameraRef && cameraRef.current !== undefined) {
-      camera.takePictureAsync({ allowsEditing: true }).then(p => {
+  const takePhoto = () => {
+    if (cameraReady) {
+      cameraRef.current.takePictureAsync({ allowsEditing: true }).then(p => {
         changeActivePhoto(p);
         navigation.navigate("Photo");
       });
     } else {
-      return console.error("Photo not taken -- no camera ref");
+      return;
     }
   };
 
-  useLayoutEffect(() => {
-    if (cameraRef.current) {
-      getBestRatio(cameraRef.current).then(r => setCameraRatio(r));
+  useEffect(() => {
+    if (cameraReady) {
+      getBestRatio();
     }
-  }, [cameraRef.current]);
+  }, [cameraReady]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -72,22 +68,25 @@ function CameraView({
         style={styles.cameraPreview}
         ref={cameraRef}
         ratio={cameraRatio}
+        onCameraReady={() => setCameraReady(true)}
         autoFocus={Camera.Constants.AutoFocus.on}
         type={Camera.Constants.Type.back}
       />
-      <View style={styles.cameraActions}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "transparent"
-          }}
-          onPress={() => takePhoto(cameraRef.current)}
-        >
-          <MaterialCommunityIcons
-            name="camera"
-            style={{ color: "#fff", fontSize: 40 }}
-          />
-        </TouchableOpacity>
-      </View>
+      {cameraReady && (
+        <View style={styles.cameraActions}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "transparent"
+            }}
+            onPress={takePhoto}
+          >
+            <MaterialCommunityIcons
+              name="camera"
+              style={{ color: "#fff", fontSize: 40 }}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
