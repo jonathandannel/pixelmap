@@ -5,19 +5,17 @@ import { StyleSheet, Button, Text, View, Image } from "react-native";
 const mapStateToProps = state => ({ state });
 
 function PhotoView({ navigation, state: { activePhoto } }) {
-  const makeApiCall = () => {
-    const blob = fetch(activePhoto.uri).then(res => res.blob());
-    return fetch("http://a0f70faf.ngrok.io/scan", {
+  const makeApiCall = async () => {
+    const payload = JSON.stringify({
+      type: "image",
+      base64: `data:image/jpg;base64,${activePhoto.base64}`
+    });
+    console.log(payload);
+    fetch("http://d7cbb09a.ngrok.io/scan", {
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: activePhoto.uri,
-        data: activePhoto.base64
-      })
-    }).then(r => console.log(r));
+      headers: { "content-type": "application/json" },
+      body: payload
+    });
   };
 
   return (

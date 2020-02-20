@@ -6,7 +6,7 @@ app.debug=True
 
 @app.route('/scan', methods=['POST'])
 def scan():
-    image_url = request.json
+    image_url = request.get_json()
     print(image_url)
     # image = ScanRemoteImage(image_url)
 
