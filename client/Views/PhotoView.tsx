@@ -1,21 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, Button, Text, View, Image } from "react-native";
 
 const mapStateToProps = state => ({ state });
 
 function PhotoView({ navigation, state: { activePhoto } }) {
+  const [processedText, setProcessedText] = useState(null);
   const processPhoto = () => {
     const body = JSON.stringify({
       base64: activePhoto.base64
     });
-    fetch("http://d7cbb09a.ngrok.io/scan", {
+    fetch("http://d7c10e7d.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body
     })
       .then(r => r.json())
-      .then(j => console.log(j));
+      .then(j => setProcessedText(j.imageText));
   };
 
   return (
@@ -24,6 +25,11 @@ function PhotoView({ navigation, state: { activePhoto } }) {
       <Button title="Process" onPress={processPhoto}>
         Process
       </Button>
+      {processedText && (
+        <View>
+          <Text> {processedText}</Text>
+        </View>
+      )}
     </View>
   );
 }

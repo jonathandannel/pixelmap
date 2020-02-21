@@ -6,12 +6,11 @@ import base64
 
 class ScanBase64Image:
     def __init__(self, base64string):
-        self.base64string = base64string
-    
-    def decode(self):
-        decoded = base64.decode(self.base64string)
-        print(type(decoded))
+        self.raw_data = BytesIO(base64.b64decode(base64string))
 
+    def get_text(self):
+        image = Image.open(self.raw_data)
+        return image_to_string(image)
 
 class ScanRemoteImage:
     def __init__(self, url):
