@@ -6,8 +6,11 @@ import { createStore } from "redux";
 import { rootReducer } from "./reducer";
 
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
-import { mapping, light as lightTheme } from "@eva-design/eva";
+import { mapping, light } from "@eva-design/eva";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
+
+import { default as appTheme } from "./custom-theme.json";
+const theme = { ...light, ...appTheme };
 
 import HomeView from "./Views/HomeView";
 import CameraView from "./Views/CameraView";
@@ -20,7 +23,7 @@ function App() {
   return (
     <Provider store={store}>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider mapping={mapping} theme={lightTheme}>
+      <ApplicationProvider mapping={mapping} theme={theme}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={HomeView} />

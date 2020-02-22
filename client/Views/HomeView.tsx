@@ -3,13 +3,14 @@ import * as ImagePicker from "expo-image-picker";
 import { StyleSheet } from "react-native";
 import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
-import { Button, Icon, Layout } from "@ui-kitten/components";
+import { Button, Icon, Layout, Text } from "@ui-kitten/components";
 
 import {
   setActivePhoto,
   setCameraPermission,
   setGalleryPermission
 } from "../actions";
+import { ScaleFromCenterAndroid } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
 
 const mapStateToProps = state => ({ state });
 
@@ -66,15 +67,25 @@ function HomeView({
 
   return (
     <Layout style={{ flex: 1 }}>
+      <Text
+        style={{
+          marginTop: 60,
+          width: "80%",
+          alignSelf: "center",
+          textAlign: "center"
+        }}
+        appearance="hint"
+        category="h2"
+      >
+        How would you like to import your image?
+      </Text>
       <Layout style={styles.buttonContainer}>
         <Button
           style={styles.button}
           status="primary"
           icon={() => <Icon name="image-2" fill="white" style={styles.icon} />}
           onPress={pickPhotoFromGallery}
-        >
-          Choose from gallery
-        </Button>
+        ></Button>
         <Button
           style={styles.button}
           status="primary"
@@ -82,9 +93,17 @@ function HomeView({
           onPress={() => {
             navigation.navigate("Camera");
           }}
-        >
-          Take a photo
-        </Button>
+        ></Button>
+        <Button
+          style={styles.button}
+          status="primary"
+          icon={() => (
+            <Icon name="link-2-outline" fill="white" style={styles.icon} />
+          )}
+          onPress={() => {
+            navigation.navigate("Camera");
+          }}
+        ></Button>
       </Layout>
     </Layout>
   );
@@ -97,10 +116,13 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   button: {
-    margin: 5
+    margin: 20,
+    width: 120,
+    height: 120
   },
   icon: {
-    //
+    height: 40,
+    width: 40
   }
 });
 
