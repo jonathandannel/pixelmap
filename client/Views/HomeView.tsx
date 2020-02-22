@@ -37,7 +37,6 @@ function HomeView({
   }
 
   useEffect(() => {
-    // Check permissions on load
     checkMultiPermissions();
   }, []);
 

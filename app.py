@@ -1,16 +1,37 @@
 from flask import Flask, request, jsonify
-from ocr import ScanBase64Image, ScanRemoteImage
+from scan import ScanImage
+from pprint import pprint
 
 app = Flask(__name__)
 app.debug=True
 
 @app.route('/scan', methods=['POST'])
 def scan():
+    image = None
     data = request.get_json()
-    image = ScanBase64Image(data["base64"])
-    return jsonify({
+
+    pprint(data.keys())
+
+    if "base64" in data:
+      image = ScanImage(base64string=data["base64"])
+    if "url" in data:
+      image = ScanImage(image_url=data["url"])
+
+    image_text = image.get_text()
+
+    if image_text:
+      return jsonify({
       "message": "Success",
-      "imageText": image.get_text()
-    })
+      "imageText": image_text
+    }), 200
+    
+    else:
+      return jsonify({
+        "message": "Failure",
+        "imageText": None
+      }), 400
+
+
+    
 
 
