@@ -7,10 +7,12 @@ const mapStateToProps = state => ({ state });
 function PhotoView({ navigation, state: { activePhoto } }) {
   const [processedText, setProcessedText] = useState(null);
   const processPhoto = () => {
+    console.log(activePhoto);
+    // Need to send dimensions and filetype as well
     const body = JSON.stringify({
       base64: activePhoto.base64
     });
-    fetch("http://00e46e71.ngrok.io/scan", {
+    fetch("http://43fb16d4.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body
