@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19003,
-  "expoServerPort": 19000,
+  "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": "https://yv-w5a.jonathandannel.client.exp.direct",
-  "packagerNgrokUrl": "https://packager.yv-w5a.jonathandannel.client.exp.direct",
-  "ngrokPid": 12231,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }

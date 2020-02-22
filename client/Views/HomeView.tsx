@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet } from "react-native";
 import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
+import { Button, Icon, Layout } from "@ui-kitten/components";
 
 import {
   setActivePhoto,
@@ -64,24 +65,43 @@ function HomeView({
   };
 
   return (
-    <View>
-      <Button onPress={pickPhotoFromGallery} title="gallery">
-        {" "}
-        Choose from gallery{" "}
-      </Button>
-      <Button
-        onPress={() => {
-          navigation.navigate("Camera");
-        }}
-        title="camera"
-      >
-        {" "}
-        Take a photo{" "}
-      </Button>
-    </View>
+    <Layout style={{ flex: 1 }}>
+      <Layout style={styles.buttonContainer}>
+        <Button
+          style={styles.button}
+          status="primary"
+          icon={() => <Icon name="image-2" fill="white" style={styles.icon} />}
+          onPress={pickPhotoFromGallery}
+        >
+          Choose from gallery
+        </Button>
+        <Button
+          style={styles.button}
+          status="primary"
+          icon={() => <Icon name="camera" fill="white" style={styles.icon} />}
+          onPress={() => {
+            navigation.navigate("Camera");
+          }}
+        >
+          Take a photo
+        </Button>
+      </Layout>
+    </Layout>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flex: 0.5,
+    margin: 50,
+    alignSelf: "center"
+  },
+  button: {
+    margin: 5
+  },
+  icon: {
+    //
+  }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView);

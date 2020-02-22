@@ -5,8 +5,9 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "./reducer";
 
-import { ApplicationProvider, Layout, Text } from "@ui-kitten/components";
+import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { mapping, light as lightTheme } from "@eva-design/eva";
+import { EvaIconsPack } from "@ui-kitten/eva-icons";
 
 import HomeView from "./Views/HomeView";
 import CameraView from "./Views/CameraView";
@@ -18,6 +19,7 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <Provider store={store}>
+      <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider mapping={mapping} theme={lightTheme}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
