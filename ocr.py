@@ -5,8 +5,6 @@ import requests
 import base64
 import cv2
 import numpy as np
-from b64 import base
-
 
 class ScanBase64Image:
     def __init__(self, base64string):
