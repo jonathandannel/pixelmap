@@ -6,6 +6,8 @@ import * as Permissions from "expo-permissions";
 import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import { setActivePhoto, setCameraPermission } from "../actions";
 
+import { Button, Icon, Layout, Text } from "@ui-kitten/components";
+
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window");
 
 const mapStateToProps = state => ({ state });
@@ -84,7 +86,7 @@ function CameraView({
           >
             <MaterialCommunityIcons
               name="camera"
-              style={{ color: "#fff", fontSize: 40 }}
+              style={{ color: "#fff", fontSize: 60 }}
             />
           </TouchableOpacity>
         </View>
@@ -96,7 +98,8 @@ function CameraView({
 const styles = StyleSheet.create({
   cameraPreview: {
     flex: 1,
-    position: "absolute",
+    // flexDirection: "column",
+    position: "relative",
     width: deviceWidth,
     height: deviceHeight,
     top: 0,
@@ -105,10 +108,11 @@ const styles = StyleSheet.create({
     right: 0
   },
   cameraActions: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    margin: 30
+    position: "absolute",
+    bottom: 0,
+    alignItems: "center",
+    marginBottom: 50,
+    width: "100%"
   }
 });
 
