@@ -55,8 +55,12 @@ function HomeView({
       quality: 1,
       allowsEditing: true
     });
-    changeActivePhoto(photo);
-    navigation.navigate("Photo");
+    if (photo) {
+      changeActivePhoto(photo);
+      navigation.navigate("Photo");
+    } else {
+      navigation.navigate("Home");
+    }
   };
 
   return (

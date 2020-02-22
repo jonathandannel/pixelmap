@@ -10,9 +10,9 @@ def scan():
     image = None
     data = request.get_json()
 
-    if "base64" in data and not "url" in data":
+    if "base64" in data:
       image = ScanImage(base64string=data["base64"])
-    if "url" in data and not "base64" in data:
+    if "url" in data:
       image = ScanImage(image_url=data["url"])
 
     image_text = image.get_text()

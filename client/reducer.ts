@@ -1,7 +1,9 @@
 const initialState = {
   cameraPermission: false,
   galleryPermission: false,
-  activePhoto: null
+  activePhoto: null,
+  loadingStatus: false,
+  uiMessage: null
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -25,6 +27,20 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         activePhoto: photo
+      };
+    }
+    case "SET_LOADING_STATUS": {
+      const { status } = action;
+      return {
+        ...state,
+        loadingStatus: status
+      };
+    }
+    case "SET_UI_MESSAGE": {
+      const { message } = action;
+      return {
+        ...state,
+        uiMessage: message
       };
     }
     default:
