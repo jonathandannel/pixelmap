@@ -53,7 +53,8 @@ function HomeView({
     }
     const photo = await ImagePicker.launchImageLibraryAsync({
       base64: true,
-      quality: 1
+      quality: 1,
+      allowsEditing: true
     });
     changeActivePhoto(photo);
     navigation.navigate("Photo");
