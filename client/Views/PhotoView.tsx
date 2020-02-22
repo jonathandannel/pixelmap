@@ -10,7 +10,7 @@ function PhotoView({ navigation, state: { activePhoto } }) {
     const body = JSON.stringify({
       base64: activePhoto.base64
     });
-    fetch("http://d7c10e7d.ngrok.io/scan", {
+    fetch("http://00e46e71.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body
