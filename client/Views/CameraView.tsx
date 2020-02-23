@@ -6,8 +6,6 @@ import * as Permissions from "expo-permissions";
 import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import { setActivePhoto, setCameraPermission } from "../actions";
 
-import { Button, Icon, Layout, Text } from "@ui-kitten/components";
-
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window");
 
 const mapStateToProps = state => ({ state });
@@ -98,7 +96,6 @@ function CameraView({
 const styles = StyleSheet.create({
   cameraPreview: {
     flex: 1,
-    // flexDirection: "column",
     position: "relative",
     width: deviceWidth,
     height: deviceHeight,
