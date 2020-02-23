@@ -13,7 +13,7 @@ function PhotoView({ navigation, state: { activePhoto } }) {
     const body = JSON.stringify({
       base64: activePhoto.base64
     });
-    fetch("http://f5ac3769.ngrok.io/scan", {
+    fetch("http://9c5dace0.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body
@@ -44,7 +44,9 @@ function PhotoView({ navigation, state: { activePhoto } }) {
       {processedText && (
         <Layout level={"2"}>
           <View>
-            <Text>{processedText}</Text>
+            <Card>
+              <Text>{processedText}</Text>
+            </Card>
           </View>
         </Layout>
       )}

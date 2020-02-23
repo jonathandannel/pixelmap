@@ -57,7 +57,7 @@ function HomeView({
       quality: 1,
       allowsEditing: true
     });
-    if (photo) {
+    if (!photo.cancelled) {
       changeActivePhoto(photo);
       navigation.navigate("Photo");
     } else {

@@ -25,9 +25,9 @@ class ScanImage:
     def get_text(self):
         preprocessed_image = self.preprocess()
         # if lang is not None:
-        #     return image_to_string(preprocessed_image)
-        # else:
-        return image_to_string(preprocessed_image, lang="chi_sim")
+        return image_to_string(preprocessed_image)
+        # # else:
+        # return image_to_string(preprocessed_image, lang="chi_sim")
 
     @staticmethod
     def unsharp_mask(image, kernel_size=(5, 5), sigma=1.0, amount=1.0, threshold=0):
