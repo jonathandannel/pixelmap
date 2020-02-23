@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import { Modal, Button, Icon, Layout, Text, Card } from "@ui-kitten/components";
 
 const mapStateToProps = state => ({ state });
@@ -42,12 +48,12 @@ function PhotoView({ navigation, state: { activePhoto } }) {
         Process
       </Button>
       {processedText && (
-        <Layout level={"2"}>
-          <View>
+        <Layout style={styles.textContainer} level={"2"}>
+          <ScrollView style={{ flex: 1 }}>
             <Card>
               <Text>{processedText}</Text>
             </Card>
-          </View>
+          </ScrollView>
         </Layout>
       )}
       <Modal
@@ -55,7 +61,9 @@ function PhotoView({ navigation, state: { activePhoto } }) {
         onBackdropPress={() => setShowImageModal(false)}
         visible={showImageModal}
       >
-        <Image style={styles.imageModal_image} source={activePhoto}></Image>
+        <Layout style={styles.imageModal_container}>
+          <Image style={styles.imageModal_image} source={activePhoto}></Image>
+        </Layout>
       </Modal>
     </Layout>
   );
@@ -68,20 +76,30 @@ const styles = StyleSheet.create({
     width: "auto"
   },
   imageModal: {
-    width: 90,
-    height: 90,
+    // width: 90,
+    // height: 90,
     justifyContent: "center",
     alignItems: "center"
+  },
+  imageModal_container: {
+    // borderStyle: "solid",
+    // borderColor: "violet",
+    // borderWidth: 2
   },
   imageModal_image: {
     height: 500,
     width: 600,
-    resizeMode: "contain"
+    resizeMode: "contain",
+    borderStyle: "solid",
+    borderColor: "violet"
   },
   button: {},
   icon: {
     height: 40,
     width: 40
+  },
+  textContainer: {
+    flex: 1
   }
 });
 
