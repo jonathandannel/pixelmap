@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import * as ImagePicker from "expo-image-picker";
 import { StyleSheet } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
 import { Button, Icon, Layout, Text } from "@ui-kitten/components";
@@ -10,7 +10,6 @@ import {
   setCameraPermission,
   setGalleryPermission
 } from "../actions";
-import { ScaleFromCenterAndroid } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
 
 const mapStateToProps = state => ({ state });
 
@@ -74,7 +73,6 @@ function HomeView({
           alignSelf: "center",
           textAlign: "center"
         }}
-        // appearance="hint"
         category="h2"
       >
         How would you like to import your image?

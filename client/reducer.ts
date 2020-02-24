@@ -3,11 +3,27 @@ const initialState = {
   galleryPermission: false,
   activePhoto: null,
   loadingStatus: false,
-  uiMessage: null
+  uiMessage: null,
+  uploadMode: null,
+  language: null
 };
 
 export const rootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "SET_UPLOAD_MODE": {
+      const { mode } = action;
+      return {
+        ...state,
+        uploadMode: mode
+      };
+    }
+    case "SET_LANGUAGE": {
+      const { chosenLanguage } = action;
+      return {
+        ...state,
+        language: chosenLanguage
+      };
+    }
     case "SET_CAMERA_PERMISSION": {
       const { permission } = action;
       return {

@@ -1,29 +1,32 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import {
-  StyleSheet,
-  View,
-  ImageBackground,
-  TouchableOpacity,
-  Image
-} from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import {
   Button,
   Icon,
   Layout,
   Text,
   Card,
-  withStyles
+  Select
 } from "@ui-kitten/components";
 
 const mapStateToProps = state => ({ state });
 
-function PhotoView({ navigation, state: { activePhoto } }) {
+const languages = [
+  { text: "English" },
+  { text: "French" },
+  { text: "Spanish" }
+];
+
+function PhotoView({ navigation, state }) {
   const [processedText, setProcessedText] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+
+  const changeLanguage = v => setSelectedLanguage(v);
 
   const processPhoto = () => {
     const body = JSON.stringify({
-      base64: activePhoto.base64
+      base64: state.activePhoto.base64
     });
     fetch("http://9c5dace0.ngrok.io/scan", {
       method: "POST",
@@ -33,8 +36,6 @@ function PhotoView({ navigation, state: { activePhoto } }) {
       .then(r => r.json())
       .then(j => setProcessedText(j.imageText));
   };
-
-  // TODO: Get and render a bounding box over image text
 
   return (
     <Layout style={{ flex: 1, padding: 5 }}>
@@ -60,6 +61,15 @@ function PhotoView({ navigation, state: { activePhoto } }) {
           ></Icon>
         </View>
       </View>
+      <Layout>
+        <Select
+          data={languages}
+          onBlur={() => null}
+          onFocus={() => null}
+          selectedOption={selectedLanguage}
+          onSelect={changeLanguage}
+        ></Select>
+      </Layout>
       <Card
         style={{
           marginTop: 5,
@@ -72,12 +82,10 @@ function PhotoView({ navigation, state: { activePhoto } }) {
           style={{
             height: 300,
             width: "auto",
-            // flex: 1,
             justifyContent: "flex-end",
             paddingBottom: 0
-            // opacity: 0.3
           }}
-          source={activePhoto}
+          source={state.activePhoto}
         ></Image>
 
         <Button
@@ -91,25 +99,47 @@ function PhotoView({ navigation, state: { activePhoto } }) {
           Process
         </Button>
       </Card>
-      {/* <Text
-        category="h4"
+      <Text
+        style={{ marginTop: 20, marginBottom: 5, alignSelf: "center" }}
+        category="h6"
         appearance="hint"
-        style={{
-          textAlign: "center",
-          marginTop: 20
-        }}
       >
-        or
-      </Text> */}
-      {/* {processedText && (
-        <Layout level={"2"}>
-          <View>
-            <Card>
-              <Text>{processedText}</Text>
-            </Card>
-          </ScrollView>
-        </Layout>
-      )} */}
+        Not the image you wanted to use?
+      </Text>
+      <Layout style={styles.optionButtonContainer}>
+        <Button
+          style={styles.optionButton}
+          status="primary"
+          icon={() => (
+            <Icon name="home" fill="white" style={styles.optionButtonIcon} />
+          )}
+          // onPress={pickPhotoFromGallery}
+        ></Button>
+        <Button
+          style={styles.optionButton}
+          status="primary"
+          icon={() => (
+            <Icon name="camera" fill="white" style={styles.optionButtonIcon} />
+          )}
+          onPress={() => {
+            // navigation.navigate("Camera");
+          }}
+        ></Button>
+        <Button
+          style={styles.optionButton}
+          status="primary"
+          icon={() => (
+            <Icon
+              name="link-2-outline"
+              fill="white"
+              style={styles.optionButtonIcon}
+            />
+          )}
+          onPress={() => {
+            // navigation.navigate("Camera");
+          }}
+        ></Button>
+      </Layout>
     </Layout>
   );
 }
@@ -124,6 +154,21 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1
+  },
+  optionButtonContainer: {
+    flex: 0.5,
+    flexDirection: "row",
+    // margin: 50,
+    alignSelf: "center"
+  },
+  optionButton: {
+    margin: 20,
+    width: 60,
+    height: 60
+  },
+  optionButtonIcon: {
+    height: 20,
+    width: 20
   }
 });
 
