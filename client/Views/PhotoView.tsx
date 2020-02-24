@@ -107,7 +107,7 @@ function PhotoView({ navigation, state: { activePhoto } }) {
             <Card>
               <Text>{processedText}</Text>
             </Card>
-          </View>
+          </ScrollView>
         </Layout>
       )} */}
     </Layout>
@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
   icon: {
     height: 40,
     width: 40
+  },
+  textContainer: {
+    flex: 1
   }
 });
 
