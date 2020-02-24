@@ -1,13 +1,25 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
-import { Modal, Button, Icon, Layout, Text, Card } from "@ui-kitten/components";
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+  Image
+} from "react-native";
+import {
+  Button,
+  Icon,
+  Layout,
+  Text,
+  Card,
+  withStyles
+} from "@ui-kitten/components";
 
 const mapStateToProps = state => ({ state });
 
 function PhotoView({ navigation, state: { activePhoto } }) {
   const [processedText, setProcessedText] = useState(null);
-  const [showImageModal, setShowImageModal] = useState(false);
 
   const processPhoto = () => {
     const body = JSON.stringify({
@@ -25,23 +37,71 @@ function PhotoView({ navigation, state: { activePhoto } }) {
   // TODO: Get and render a bounding box over image text
 
   return (
-    <Layout style={{ flex: 1 }}>
-      <Card>
-        <TouchableOpacity onPress={() => setShowImageModal(true)}>
-          <Image style={styles.image} source={activePhoto}></Image>
-        </TouchableOpacity>
-      </Card>
-      <Button
-        status="primary"
-        style={styles.button}
-        icon={() => (
-          <Icon name="activity" fill="white" style={styles.icon}></Icon>
-        )}
-        onPress={processPhoto}
+    <Layout style={{ flex: 1, padding: 5 }}>
+      <View
+        style={{
+          justifyContent: "center",
+          flexDirection: "column",
+          marginTop: 12,
+          marginBottom: 15,
+          borderRadius: 5,
+          height: 40,
+          backgroundColor: "#77D497"
+        }}
       >
-        Process
-      </Button>
-      {processedText && (
+        <View style={{ justifyContent: "center", flexDirection: "row" }}>
+          <Text style={{ color: "white" }} category="s2">
+            Image imported successfully
+          </Text>
+          <Icon
+            style={{ marginLeft: 6, width: 12, height: 21 }}
+            name="checkmark-outline"
+            fill="white"
+          ></Icon>
+        </View>
+      </View>
+      <Card
+        style={{
+          marginTop: 5,
+          marginBottom: 5,
+          paddingTop: 10,
+          paddingBottom: 10
+        }}
+      >
+        <Image
+          style={{
+            height: 300,
+            width: "auto",
+            // flex: 1,
+            justifyContent: "flex-end",
+            paddingBottom: 0
+            // opacity: 0.3
+          }}
+          source={activePhoto}
+        ></Image>
+
+        <Button
+          status="primary"
+          style={styles.button}
+          icon={() => (
+            <Icon name="activity" fill="white" style={styles.icon}></Icon>
+          )}
+          onPress={processPhoto}
+        >
+          Process
+        </Button>
+      </Card>
+      {/* <Text
+        category="h4"
+        appearance="hint"
+        style={{
+          textAlign: "center",
+          marginTop: 20
+        }}
+      >
+        or
+      </Text> */}
+      {/* {processedText && (
         <Layout level={"2"}>
           <View>
             <Card>
@@ -49,36 +109,15 @@ function PhotoView({ navigation, state: { activePhoto } }) {
             </Card>
           </View>
         </Layout>
-      )}
-      <Modal
-        style={styles.imageModal}
-        onBackdropPress={() => setShowImageModal(false)}
-        visible={showImageModal}
-      >
-        <Image style={styles.imageModal_image} source={activePhoto}></Image>
-      </Modal>
+      )} */}
     </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  image: {
-    resizeMode: "contain",
-    height: 200,
-    width: "auto"
+  button: {
+    marginTop: 15
   },
-  imageModal: {
-    width: 90,
-    height: 90,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  imageModal_image: {
-    height: 500,
-    width: 600,
-    resizeMode: "contain"
-  },
-  button: {},
   icon: {
     height: 40,
     width: 40

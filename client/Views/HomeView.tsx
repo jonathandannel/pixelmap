@@ -74,7 +74,7 @@ function HomeView({
           alignSelf: "center",
           textAlign: "center"
         }}
-        appearance="hint"
+        // appearance="hint"
         category="h2"
       >
         How would you like to import your image?
