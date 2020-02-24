@@ -8,7 +8,8 @@ import { Button, Icon, Layout, Text } from "@ui-kitten/components";
 import {
   setActivePhoto,
   setCameraPermission,
-  setGalleryPermission
+  setGalleryPermission,
+  setUploadMode
 } from "../actions";
 
 const mapStateToProps = state => ({ state });
@@ -18,13 +19,15 @@ const mapDispatchToProps = dispatch => ({
   changeGalleryPermission: permission =>
     dispatch(setGalleryPermission(permission)),
   changeCameraPermission: permission =>
-    dispatch(setCameraPermission(permission))
+    dispatch(setCameraPermission(permission)),
+  changeUploadMode: mode => dispatch(setUploadMode(mode))
 });
 
 function HomeView({
   state,
   navigation,
   changeActivePhoto,
+  changeUploadMode,
   changeGalleryPermission,
   changeCameraPermission
 }) {
@@ -58,6 +61,7 @@ function HomeView({
     });
     if (photo.cancelled === false) {
       changeActivePhoto(photo);
+      changeUploadMode("gallery");
       navigation.navigate("Photo");
     } else {
       navigation.navigate("Home");
@@ -82,13 +86,17 @@ function HomeView({
           style={styles.button}
           status="primary"
           icon={() => <Icon name="image-2" fill="white" style={styles.icon} />}
-          onPress={pickPhotoFromGallery}
+          onPress={() => {
+            changeUploadMode("gallery");
+            pickPhotoFromGallery;
+          }}
         ></Button>
         <Button
           style={styles.button}
           status="primary"
           icon={() => <Icon name="camera" fill="white" style={styles.icon} />}
           onPress={() => {
+            changeUploadMode("camera");
             navigation.navigate("Camera");
           }}
         ></Button>
@@ -99,7 +107,8 @@ function HomeView({
             <Icon name="link-2-outline" fill="white" style={styles.icon} />
           )}
           onPress={() => {
-            navigation.navigate("Camera");
+            changeUploadMode("link");
+            navigation.navigate("Photo");
           }}
         ></Button>
       </Layout>

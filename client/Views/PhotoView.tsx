@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, View, Image } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
 import {
   Button,
   Icon,
@@ -10,7 +12,16 @@ import {
   Select
 } from "@ui-kitten/components";
 
+import { setActivePhoto, setGalleryPermission, setLanguage } from "../actions";
+
 const mapStateToProps = state => ({ state });
+
+const mapDispatchToProps = dispatch => ({
+  changeActivePhoto: photo => dispatch(setActivePhoto(photo)),
+  changeGalleryPermission: permission =>
+    dispatch(setGalleryPermission(permission)),
+  changeLanguage: language => dispatch(setLanguage(language))
+});
 
 const languages = [
   { text: "English" },
@@ -18,15 +29,24 @@ const languages = [
   { text: "Spanish" }
 ];
 
-function PhotoView({ navigation, state }) {
+function PhotoView({
+  navigation,
+  state,
+  changeActivePhoto,
+  changeGalleryPermission
+}) {
   const [processedText, setProcessedText] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
-  const changeLanguage = v => setSelectedLanguage(v);
+  const changeLanguage = v => {
+    setSelectedLanguage(v);
+    setLanguage(v.text);
+  };
 
   const processPhoto = () => {
     const body = JSON.stringify({
-      base64: state.activePhoto.base64
+      base64: state.activePhoto.base64,
+      language: state.language
     });
     fetch("http://9c5dace0.ngrok.io/scan", {
       method: "POST",
@@ -35,6 +55,29 @@ function PhotoView({ navigation, state }) {
     })
       .then(r => r.json())
       .then(j => setProcessedText(j.imageText));
+  };
+
+  const pickPhotoFromGallery = async () => {
+    if (!state.galleryPermission) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      if (status === "granted") {
+        changeGalleryPermission(true);
+      } else {
+        console.error("Permission for gallery not granted");
+        return;
+      }
+    }
+    const photo = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+      quality: 1,
+      allowsEditing: true
+    });
+    if (photo.cancelled === false) {
+      changeActivePhoto(photo);
+      navigation.navigate("Photo");
+    } else {
+      navigation.navigate("Home");
+    }
   };
 
   return (
@@ -87,7 +130,6 @@ function PhotoView({ navigation, state }) {
           }}
           source={state.activePhoto}
         ></Image>
-
         <Button
           status="primary"
           style={styles.button}
@@ -113,32 +155,56 @@ function PhotoView({ navigation, state }) {
           icon={() => (
             <Icon name="home" fill="white" style={styles.optionButtonIcon} />
           )}
-          // onPress={pickPhotoFromGallery}
+          onPress={() => navigation.navigate("Home")}
         ></Button>
-        <Button
-          style={styles.optionButton}
-          status="primary"
-          icon={() => (
-            <Icon name="camera" fill="white" style={styles.optionButtonIcon} />
-          )}
-          onPress={() => {
-            // navigation.navigate("Camera");
-          }}
-        ></Button>
-        <Button
-          style={styles.optionButton}
-          status="primary"
-          icon={() => (
-            <Icon
-              name="link-2-outline"
-              fill="white"
-              style={styles.optionButtonIcon}
-            />
-          )}
-          onPress={() => {
-            // navigation.navigate("Camera");
-          }}
-        ></Button>
+        {state.uploadMode === "camera" && (
+          <Button
+            style={styles.optionButton}
+            status="primary"
+            icon={() => (
+              <Icon
+                name="camera"
+                fill="white"
+                style={styles.optionButtonIcon}
+              />
+            )}
+            onPress={() => {
+              navigation.navigate("Camera");
+            }}
+          ></Button>
+        )}
+        {state.uploadMode === "gallery" && (
+          <Button
+            style={styles.optionButton}
+            status="primary"
+            icon={() => (
+              <Icon
+                name="camera"
+                fill="white"
+                style={styles.optionButtonIcon}
+              />
+            )}
+            onPress={() => {
+              () => pickPhotoFromGallery();
+            }}
+          ></Button>
+        )}
+        {state.uploadMode === "link" && (
+          <Button
+            style={styles.optionButton}
+            status="primary"
+            icon={() => (
+              <Icon
+                name="link-2-outline"
+                fill="white"
+                style={styles.optionButtonIcon}
+              />
+            )}
+            onPress={() => {
+              // TODO
+            }}
+          ></Button>
+        )}
       </Layout>
     </Layout>
   );
@@ -158,7 +224,6 @@ const styles = StyleSheet.create({
   optionButtonContainer: {
     flex: 0.5,
     flexDirection: "row",
-    // margin: 50,
     alignSelf: "center"
   },
   optionButton: {
@@ -172,4 +237,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps)(PhotoView);
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoView);
