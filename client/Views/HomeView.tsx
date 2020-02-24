@@ -88,7 +88,7 @@ function HomeView({
           icon={() => <Icon name="image-2" fill="white" style={styles.icon} />}
           onPress={() => {
             changeUploadMode("gallery");
-            pickPhotoFromGallery;
+            pickPhotoFromGallery();
           }}
         ></Button>
         <Button

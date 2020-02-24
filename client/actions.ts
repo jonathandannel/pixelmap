@@ -32,3 +32,8 @@ export const setLanguage = language => ({
   type: "SET_LANGUAGE",
   language
 });
+
+export const setProcessedText = text => ({
+  type: "SET_PROCESSED_TEXT",
+  text
+});

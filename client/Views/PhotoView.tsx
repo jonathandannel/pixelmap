@@ -12,7 +12,12 @@ import {
   Select
 } from "@ui-kitten/components";
 
-import { setActivePhoto, setGalleryPermission, setLanguage } from "../actions";
+import {
+  setActivePhoto,
+  setGalleryPermission,
+  setLanguage,
+  setProcessedText
+} from "../actions";
 
 const mapStateToProps = state => ({ state });
 
@@ -20,7 +25,8 @@ const mapDispatchToProps = dispatch => ({
   changeActivePhoto: photo => dispatch(setActivePhoto(photo)),
   changeGalleryPermission: permission =>
     dispatch(setGalleryPermission(permission)),
-  changeLanguage: language => dispatch(setLanguage(language))
+  changeLanguage: language => dispatch(setLanguage(language)),
+  changeProcessedText: text => dispatch(setProcessedText(text))
 });
 
 const languages = [
@@ -33,7 +39,8 @@ function PhotoView({
   navigation,
   state,
   changeActivePhoto,
-  changeGalleryPermission
+  changeGalleryPermission,
+  changeProcessedText
 }) {
   const [processedText, setProcessedText] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
@@ -48,13 +55,16 @@ function PhotoView({
       base64: state.activePhoto.base64,
       language: state.language
     });
-    fetch("http://9c5dace0.ngrok.io/scan", {
+    fetch("http://319f62be.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body
     })
       .then(r => r.json())
-      .then(j => setProcessedText(j.imageText));
+      .then(j => {
+        changeProcessedText(j.imageText);
+        navigation.navigate("Text");
+      });
   };
 
   const pickPhotoFromGallery = async () => {
@@ -106,6 +116,7 @@ function PhotoView({
       </View>
       <Layout>
         <Select
+          style={{ marginBottom: 15 }}
           data={languages}
           onBlur={() => null}
           onFocus={() => null}
@@ -179,7 +190,7 @@ function PhotoView({
             status="primary"
             icon={() => (
               <Icon
-                name="camera"
+                name="image-2"
                 fill="white"
                 style={styles.optionButtonIcon}
               />

@@ -5,7 +5,8 @@ const initialState = {
   loadingStatus: false,
   uiMessage: null,
   uploadMode: null,
-  language: null
+  language: null,
+  processedText: null
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -57,6 +58,13 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         uiMessage: message
+      };
+    }
+    case "SET_PROCESSED_TEXT": {
+      const { text } = action;
+      return {
+        ...state,
+        processedText: text
       };
     }
     default:
