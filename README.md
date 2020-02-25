@@ -8,12 +8,12 @@
 
 ## Screenshots
 
-![Home](https://github.com/jonathandannel/pixelmap/blob/master/doc/home_view.jpg)
+![Home](https://github.com/jonathandannel/pixelmap/blob/master/doc/home_view.jpg=450x)
 
-![Pick and crop](https://github.com/jonathandannel/pixelmap/blob/master/doc/pick_and_crop.jpg)
+![Pick and crop](https://github.com/jonathandannel/pixelmap/blob/master/doc/pick_and_crop.jpg=450x)
 
-![Process photo](https://github.com/jonathandannel/pixelmap/blob/master/doc/process_photo.jpg)
-![Processed text](https://github.com/jonathandannel/pixelmap/blob/master/doc/processed_text.jpg)
+![Process photo](https://github.com/jonathandannel/pixelmap/blob/master/doc/process_photo.jpg=450x)
+![Processed text](https://github.com/jonathandannel/pixelmap/blob/master/doc/processed_text.jpg=450x)
 
 ## TODO:
 
