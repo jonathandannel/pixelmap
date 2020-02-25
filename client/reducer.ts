@@ -5,7 +5,7 @@ const initialState = {
   loadingStatus: false,
   uiMessage: null,
   uploadMode: null,
-  language: null,
+  language: "English",
   processedText: null
 };
 

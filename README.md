@@ -10,13 +10,27 @@
 
 ## Screenshots
 
-<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/home_view.jpg" width="450px">
+### Home
 
-<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/pick_and_crop.jpg" width="450px">
+<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/home_view.jpg" width="350px">
 
-<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/process_photo.jpg" width="450px">
+### Picking from gallery
 
-<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/processed_text.jpg" width="450px">
+<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/pick_and_crop.jpg" width="350px">
+
+### Processing
+
+<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/process_photo.jpg" width="350px">
+
+### Result
+
+<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/processed_text.jpg" width="350px">
+
+### Multiple languages supported
+
+<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/process_chinese.jpg" width="350px">
+
+<img src="https://github.com/jonathandannel/pixelmap/blob/master/doc/chinese_text.jpg" width="350px">
 
 ## TODO:
 

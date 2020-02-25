@@ -18,7 +18,7 @@ function TextView({ state, navigation }) {
         paddingBottom: 20
       }}
     >
-      <Card>
+      <Layout>
         <ScrollView style={{ padding: 5 }}>
           <Text
             style={{
@@ -30,7 +30,7 @@ function TextView({ state, navigation }) {
             {state.processedText || "Loading"}
           </Text>
         </ScrollView>
-      </Card>
+      </Layout>
     </Layout>
   );
 }

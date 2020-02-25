@@ -32,7 +32,12 @@ const mapDispatchToProps = dispatch => ({
 const languages = [
   { text: "English" },
   { text: "French" },
-  { text: "Spanish" }
+  { text: "Spanish" },
+  { text: "Simplified Chinese" },
+  { text: "Traditional Chinese" },
+  { text: "Italian" },
+  { text: "Russian" },
+  { text: "German" }
 ];
 
 function PhotoView({
