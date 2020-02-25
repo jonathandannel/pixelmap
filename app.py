@@ -8,14 +8,15 @@ app.debug=True
 @app.route('/scan', methods=['POST'])
 def scan():
     image = None
-    data = request.get_json()
+    req = request.get_json()
+    lang = req['language']
+    
+    if "base64" in req:
+      image = ScanImage(base64string=req["base64"])
+    if "url" in req:
+      image = ScanImage(image_url=req["url"])
 
-    if "base64" in data:
-      image = ScanImage(base64string=data["base64"])
-    if "url" in data:
-      image = ScanImage(image_url=data["url"])
-
-    image_text = image.get_text()
+    image_text = image.get_text(lang)
 
     if image_text:
       return jsonify({

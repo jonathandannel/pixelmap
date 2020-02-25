@@ -28,9 +28,9 @@ export const setUploadMode = mode => ({
   mode
 });
 
-export const setLanguage = language => ({
+export const setLanguage = chosenLanguage => ({
   type: "SET_LANGUAGE",
-  language
+  chosenLanguage
 });
 
 export const setProcessedText = text => ({

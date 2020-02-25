@@ -22,12 +22,19 @@ class ScanImage:
         thresh = cv2.threshold(greyscale, 127, 255,cv2.THRESH_OTSU)[1]
         return self.unsharp_mask(thresh)
 
-    def get_text(self):
+    def get_text(self, lang):
         preprocessed_image = self.preprocess()
-        # if lang is not None:
-        return image_to_string(preprocessed_image)
-        # # else:
-        # return image_to_string(preprocessed_image, lang="chi_sim")
+        language_map = {
+            "English": "eng",
+            "Spanish": "spa",
+            "German": "deu",
+            "French": "fra",
+            "Italian": "ita",
+            "Simplified Chinese": "chi_sim",
+            "Traditional Chinese": "chi_tra",
+            "Russian": "rus",
+        }
+        return image_to_string(preprocessed_image, lang=language_map[lang])
 
     @staticmethod
     def unsharp_mask(image, kernel_size=(5, 5), sigma=1.0, amount=1.0, threshold=0):

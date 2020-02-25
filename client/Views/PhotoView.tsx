@@ -40,13 +40,14 @@ function PhotoView({
   state,
   changeActivePhoto,
   changeGalleryPermission,
-  changeProcessedText
+  changeProcessedText,
+  changeLanguage
 }) {
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
-  const changeLanguage = v => {
+  const setLanguage = v => {
     setSelectedLanguage(v);
-    setLanguage(v.text);
+    changeLanguage(v.text);
   };
 
   const processPhoto = () => {
@@ -54,7 +55,7 @@ function PhotoView({
       base64: state.activePhoto.base64,
       language: state.language
     });
-    fetch("http://319f62be.ngrok.io/scan", {
+    fetch("http://6f37a193.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body
@@ -120,7 +121,7 @@ function PhotoView({
           onBlur={() => null}
           onFocus={() => null}
           selectedOption={selectedLanguage}
-          onSelect={changeLanguage}
+          onSelect={setLanguage}
         ></Select>
       </Layout>
       <Card
