@@ -5,6 +5,8 @@ import { Button, Icon, Layout, Text, Card } from "@ui-kitten/components";
 
 const mapStateToProps = state => ({ state });
 
+// TODO: Add loading spinner
+
 function TextView({ state, navigation }) {
   useEffect(() => {}, []);
 
@@ -14,7 +16,6 @@ function TextView({ state, navigation }) {
         flex: 1,
         paddingTop: 0,
         paddingBottom: 20
-        // borderRadius: 5
       }}
     >
       <Card>

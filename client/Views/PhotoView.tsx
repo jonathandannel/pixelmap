@@ -42,7 +42,6 @@ function PhotoView({
   changeGalleryPermission,
   changeProcessedText
 }) {
-  const [processedText, setProcessedText] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
   const changeLanguage = v => {

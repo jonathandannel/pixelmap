@@ -18,7 +18,7 @@
 
 ## TODO:
 
-This is a work in progress currently being developed.
+This is a work in progress, and is currently being developed!
 
 - Create docker container for building client APKs/deploying API
 - Add multiple language `tessdata` to pytesseract path in API container
