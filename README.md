@@ -1,5 +1,7 @@
 # pixelmap
 
+### An easy way to extract text data from images on your phone
+
 ## Features
 
 - Image processing is done server side on a remote Python microservice, so the app loads quickly and is small in size
