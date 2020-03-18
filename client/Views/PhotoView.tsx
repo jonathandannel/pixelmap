@@ -55,12 +55,12 @@ function PhotoView({
     changeLanguage(v.text);
   };
 
-  const processPhoto = () => {
+  const processPhoto = (): void => {
     const body = JSON.stringify({
       base64: state.activePhoto.base64,
       language: state.language
     });
-    fetch("http://6f37a193.ngrok.io/scan", {
+    fetch("http://71353dcc.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body

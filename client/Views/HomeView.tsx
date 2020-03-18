@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, PushNotificationPermissions } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
@@ -31,20 +31,22 @@ function HomeView({
   changeGalleryPermission,
   changeCameraPermission
 }) {
-  async function checkMultiPermissions() {
-    const {
-      permissions: { camera, cameraRoll }
-    } = await Permissions.getAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
+  const checkMultiPermissions = (): Promise<Permissions.PermissionResponse> => {
+    return Permissions.getAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
+  };
 
-    changeCameraPermission(camera.granted);
-    changeGalleryPermission(cameraRoll.granted);
-  }
+  const setDefaultPermissions = (): void => {
+    checkMultiPermissions().then(({ permissions: { camera, cameraRoll } }) => {
+      changeCameraPermission(camera.granted);
+      changeGalleryPermission(cameraRoll.granted);
+    });
+  };
 
   useEffect(() => {
-    checkMultiPermissions();
+    setDefaultPermissions();
   }, []);
 
-  const pickPhotoFromGallery = async () => {
+  const pickPhotoFromGallery = async (): Promise<Permissions.PermissionResponse> => {
     if (!state.galleryPermission) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA);
       if (status === "granted") {
