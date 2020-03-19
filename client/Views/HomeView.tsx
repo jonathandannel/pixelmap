@@ -31,42 +31,57 @@ function HomeView({
   changeGalleryPermission,
   changeCameraPermission
 }) {
-  const checkMultiPermissions = (): Promise<Permissions.PermissionResponse> => {
+  const checkExistingPermissions = (): Promise<Permissions.PermissionResponse> => {
     return Permissions.getAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
   };
 
-  const setDefaultPermissions = (): void => {
-    checkMultiPermissions().then(({ permissions: { camera, cameraRoll } }) => {
-      changeCameraPermission(camera.granted);
-      changeGalleryPermission(cameraRoll.granted);
-    });
+  const setStoredPermissions = (
+    storedPermissions: Permissions.PermissionResponse
+  ): void => {
+    const {
+      camera: { granted: cameraPermission },
+      cameraRoll: { granted: galleryPermission }
+    } = storedPermissions.permissions;
+    changeCameraPermission(cameraPermission);
+    changeGalleryPermission(galleryPermission);
   };
 
   useEffect(() => {
-    setDefaultPermissions();
+    checkExistingPermissions().then(permissions =>
+      setStoredPermissions(permissions)
+    );
   }, []);
 
-  const pickPhotoFromGallery = async (): Promise<Permissions.PermissionResponse> => {
-    if (!state.galleryPermission) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA);
-      if (status === "granted") {
-        changeGalleryPermission(true);
-      } else {
-        console.error("Permission for gallery not granted");
-        return;
-      }
-    }
-    const photo = await ImagePicker.launchImageLibraryAsync({
+  const setImageFromGallery = (): Promise<void> => {
+    return ImagePicker.launchImageLibraryAsync({
       base64: true,
       quality: 1,
       allowsEditing: true
+    }).then((photo: ImagePicker.ImagePickerResult) => {
+      if (!photo.cancelled) {
+        changeActivePhoto(photo);
+        changeUploadMode("gallery");
+      }
     });
-    if (photo.cancelled === false) {
-      changeActivePhoto(photo);
-      changeUploadMode("gallery");
-      navigation.navigate("Photo");
-    } else {
-      navigation.navigate("Home");
+  };
+
+  const getGalleryPermission = (): Promise<boolean> => {
+    return Permissions.askAsync(Permissions.CAMERA_ROLL).then(
+      (resp: Permissions.PermissionResponse) => {
+        if (resp.status === "granted") {
+          return true;
+        }
+        return false;
+      }
+    );
+  };
+
+  const pickPhotoFromGallery = (): void => {
+    if (!state.galleryPermission) {
+      const permission = getGalleryPermission();
+      if (permission) {
+        setImageFromGallery().then(() => navigation.navigate("Photo"));
+      }
     }
   };
 
