@@ -49,19 +49,32 @@ function HomeView({
     getStoredPermissions();
   }, []);
 
-  const pickPhotoFromGallery = async (): Promise<void> => {
-    if (!state.galleryPermission) {
+  const askPermissionByType = async (type: string): Promise<boolean> => {
+    if (type === "camera") {
       const {
         status
       }: Permissions.PermissionResponse = await Permissions.askAsync(
         Permissions.CAMERA
       );
       if (status === "granted") {
-        changeGalleryPermission(true);
-      } else {
-        return;
+        return true;
       }
     }
+
+    if (type === "gallery") {
+      const {
+        status
+      }: Permissions.PermissionResponse = await Permissions.askAsync(
+        Permissions.CAMERA_ROLL
+      );
+      if (status === "granted") {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const pickPhotoFromGallery = async (): Promise<void> => {
     const photo: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync(
       {
         base64: true,
@@ -69,13 +82,38 @@ function HomeView({
         allowsEditing: true
       }
     );
-    if (photo && !photo.cancelled) {
+    if (!photo.cancelled) {
       changeActivePhoto(photo);
       changeUploadMode("gallery");
       navigation.navigate("Photo");
     } else {
       navigation.navigate("Home");
     }
+  };
+
+  const handleGalleryOption = (): void => {
+    if (!state.galleryPermission) {
+      askPermissionByType("gallery").then((ans: boolean) => {
+        if (!ans) {
+          return;
+        }
+        changeGalleryPermission(true);
+      });
+    }
+    pickPhotoFromGallery();
+  };
+
+  const handleCameraOption = (): void => {
+    if (!state.cameraPermission) {
+      askPermissionByType("camera").then((ans: boolean) => {
+        if (!ans) {
+          return;
+        }
+        changeCameraPermission(true);
+      });
+    }
+    changeUploadMode("Camera");
+    navigation.navigate("Camera");
   };
 
   return (
@@ -88,19 +126,13 @@ function HomeView({
           style={styles.button}
           status="primary"
           icon={() => <Icon name="image-2" fill="white" style={styles.icon} />}
-          onPress={() => {
-            changeUploadMode("gallery");
-            pickPhotoFromGallery();
-          }}
+          onPress={handleGalleryOption}
         ></Button>
         <Button
           style={styles.button}
           status="primary"
           icon={() => <Icon name="camera" fill="white" style={styles.icon} />}
-          onPress={() => {
-            changeUploadMode("camera");
-            navigation.navigate("Camera");
-          }}
+          onPress={handleCameraOption}
         ></Button>
         <Button
           style={styles.button}

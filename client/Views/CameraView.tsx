@@ -26,19 +26,6 @@ function CameraView({
   const [cameraReady, setCameraReady] = useState(false);
   const [cameraRatio, setCameraRatio] = useState("4:3");
 
-  useEffect(() => {
-    (async () => {
-      if (!state.cameraPermission) {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        if (status === "granted") {
-          changeCameraPermission(true);
-        } else {
-          navigation.navigate("Home");
-        }
-      }
-    })();
-  }, []);
-
   const getBestRatio = () => {
     cameraRef.current
       .getSupportedRatiosAsync()

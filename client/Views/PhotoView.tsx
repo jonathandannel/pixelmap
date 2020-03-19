@@ -60,7 +60,7 @@ function PhotoView({
       base64: state.activePhoto.base64,
       language: state.language
     });
-    fetch("http://6f37a193.ngrok.io/scan", {
+    fetch("http://d2fbf505.ngrok.io/scan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body
