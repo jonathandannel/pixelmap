@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { connect } from "react-redux";
@@ -31,35 +31,45 @@ function HomeView({
   changeGalleryPermission,
   changeCameraPermission
 }) {
-  async function checkMultiPermissions() {
+  const getStoredPermissions = async (): Promise<void> => {
     const {
-      permissions: { camera, cameraRoll }
-    } = await Permissions.getAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
+      permissions: {
+        camera: { granted: cameraGranted },
+        cameraRoll: { granted: cameraRollGranted }
+      }
+    }: Permissions.PermissionResponse = await Permissions.getAsync(
+      Permissions.CAMERA,
+      Permissions.CAMERA_ROLL
+    );
+    changeCameraPermission(cameraGranted);
+    changeGalleryPermission(cameraRollGranted);
+  };
 
-    changeCameraPermission(camera.granted);
-    changeGalleryPermission(cameraRoll.granted);
-  }
-
-  useEffect(() => {
-    checkMultiPermissions();
+  useEffect((): void => {
+    getStoredPermissions();
   }, []);
 
-  const pickPhotoFromGallery = async () => {
+  const pickPhotoFromGallery = async (): Promise<void> => {
     if (!state.galleryPermission) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      const {
+        status
+      }: Permissions.PermissionResponse = await Permissions.askAsync(
+        Permissions.CAMERA
+      );
       if (status === "granted") {
         changeGalleryPermission(true);
       } else {
-        console.error("Permission for gallery not granted");
         return;
       }
     }
-    const photo = await ImagePicker.launchImageLibraryAsync({
-      base64: true,
-      quality: 1,
-      allowsEditing: true
-    });
-    if (photo.cancelled === false) {
+    const photo: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync(
+      {
+        base64: true,
+        quality: 1,
+        allowsEditing: true
+      }
+    );
+    if (photo && !photo.cancelled) {
       changeActivePhoto(photo);
       changeUploadMode("gallery");
       navigation.navigate("Photo");
@@ -70,15 +80,7 @@ function HomeView({
 
   return (
     <Layout style={{ flex: 1 }}>
-      <Text
-        style={{
-          marginTop: 60,
-          width: "80%",
-          alignSelf: "center",
-          textAlign: "center"
-        }}
-        category="h2"
-      >
+      <Text style={styles.greetText} category="h2">
         How would you like to import your image?
       </Text>
       <Layout style={styles.buttonContainer}>
@@ -117,6 +119,12 @@ function HomeView({
 }
 
 const styles = StyleSheet.create({
+  greetText: {
+    marginTop: 60,
+    width: "80%",
+    alignSelf: "center",
+    textAlign: "center"
+  },
   buttonContainer: {
     flex: 0.5,
     margin: 50,
